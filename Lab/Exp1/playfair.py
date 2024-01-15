@@ -3,7 +3,11 @@ def playfair(key, plaintext):
     matrix = make_matrix_from_key(key)
     pairs = make_pairs(plaintext)
     answer = crypt(pairs, matrix)
-    print(answer)
+    ans=""
+    for i in answer:
+        for j in i:
+          ans+=j
+    return ans
     # print(matrix)
 
 
@@ -99,5 +103,50 @@ def make_matrix_from_key(key):
             answer.append(key[length * i + j])
     return answer
 
+def deplayfair(key,plaintext):
+    matrix = make_matrix_from_key(key)
+    pairs = make_pairs(plaintext)
+       
+    answer = decrypt(pairs, matrix)
+    ans=""
+    for i in answer:
+        for j in i:
+          ans+=j
+    return ans
+   
+   
+def decrypt(pairs, matrix):
+    answer = []
+    for pair in pairs:
+        answer.append(decrypt_pair(pair, matrix))
 
-print(playfair("monarchy", "aatmaj"))
+    return answer
+
+def decrypt_pair(pair, matrix):
+    # print(matrix)
+    first = matrix.index(pair[0])
+    second = matrix.index(pair[1])
+    div_1, mod_1 = divmod(first, 5)
+    div_2, mod_2 = divmod(second, 5)
+
+    # check if both are in the same row
+    if div_1 == div_2:
+        mod_1 = (mod_1 - 1) % 5
+        mod_2 = (mod_2 - 1) % 5
+
+    elif mod_1 == mod_2:  # column same
+        div_1 = (div_1 - 1) % 5
+        div_2 = (div_2 - 1) % 5
+
+    else:
+        mod_1,mod_2 = mod_2,mod_1
+    first = div_1*5+mod_1
+    second = div_2*5+mod_2
+    return (matrix[first], matrix[second])
+   
+key = "monarchy"
+ciphertext = playfair(key, "aatmaj")
+print(ciphertext)
+
+plaintext = deplayfair(key, ciphertext)
+print(plaintext)
