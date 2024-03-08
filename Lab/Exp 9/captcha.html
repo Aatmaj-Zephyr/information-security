@@ -1,0 +1,26 @@
+<html>
+<head>
+  <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+  <script src="https://www.google.com/recaptcha/api.js"></script>
+</head>
+<body>
+<form id="myForm" onsubmit="return checkRecaptcha()">
+  <input type="text" name="inputField">
+  <input type="submit" value="Submit">
+  <div class="g-recaptcha" data-sitekey="6LdIQIkpAAAAAPFqDK00itsJOZ2p8lteEVNskqfA"></div>
+</form>
+
+<script>
+function checkRecaptcha() {
+  var response = grecaptcha.getResponse();
+  if (response.length == 0) {
+    alert("Please complete the reCAPTCHA challenge.");
+    return false; // Prevent form submission
+  } else {
+    // reCAPTCHA challenge completed, proceed with form submission
+    return true;
+  }
+}
+</script>
+</body>
+</html>
